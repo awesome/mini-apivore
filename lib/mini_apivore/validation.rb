@@ -13,7 +13,22 @@ module MiniApivore
       @verb = verb.to_s
       @path = path.to_s
       @params = IndHash.new(params)
-      @expected_response_code = expected_response_code.to_i
+      @expected_response_code = parse_exp_resp_code(expected_response_code)
+    end
+    
+    def parse_exp_resp_code(code)
+      if is_int?(code)
+        return code.to_i
+      else
+        return code.to_s
+      end
+    end
+    
+    ##
+    # check var for either case: 1) is an integer; or 2) is an integer in string
+    # see: https://gist.github.com/awesome/25afcea87d3d5355532d4811e1687590
+    def is_int?(arg)
+      arg.to_s.to_i.to_s == arg.to_s
     end
 
     def swagger_checker; self.class.swagger_checker end
