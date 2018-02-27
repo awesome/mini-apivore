@@ -111,10 +111,17 @@ module MiniApivore
     def failure_message; @errors.join(" ") end
 
     def check_status_code
-      if response.status != @expected_response_code
+      case @expected_response_code
+      when /default/i
+        code = 200
+      else
+        code = @expected_response_code
+      end
+
+      if response.status != code
         @errors << "Path #{@path} did not respond with expected status code."\
             " Expected #{@expected_response_code} got #{response.status}"\
-        end
+      end
     end
 
     def check_response_is_valid
